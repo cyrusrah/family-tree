@@ -1,0 +1,9 @@
+{
+  "name": "family-tree",
+  "private": true,
+  "scripts": {
+    "build": "python3 tools/build_site.py && python3 tools/build_editor.py",
+    "apply": "python3 tools/apply_export.py",
+    "reset": "python3 tools/reset_tree.py"
+  }
+}

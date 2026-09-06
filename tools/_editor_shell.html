@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="__LANG__" dir="__DIR__">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>__TITLE__</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;800&family=Noto+Naskh+Arabic:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#EFEDE8;--card:#FBFAF7;--ink:#2F1911;--soft:#7A6C64;
+  --brand:#8F2502;--rule:#DCD6CD;--ok:#3F6B3A;--warn:#8A6A12;
+  --gm:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 6'><path d='M0,3 L6,0 L12,3 L18,0 L24,3' stroke='black' fill='none' stroke-width='1'/><path d='M0,3 L6,6 L12,3 L18,6 L24,3' stroke='black' fill='none' stroke-width='1'/></svg>")}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:'Vazirmatn',Tahoma,sans-serif;font-weight:300;font-size:15px;line-height:1.7}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+header{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:2px solid var(--brand)}
+.hbar{display:flex;gap:.6rem;align-items:center;padding:.5rem .9rem;flex-wrap:wrap}
+.emb{height:38px;flex:none}
+.grow{flex:1;min-width:120px}
+input.s{width:100%;background:var(--card);border:1px solid var(--rule);border-radius:3px;padding:.45rem .7rem}
+.b{background:var(--card);border:1px solid var(--rule);border-radius:3px;padding:.42rem .75rem;cursor:pointer;white-space:nowrap;font-size:.86rem}
+.b.p{background:var(--brand);color:#fff;border-color:var(--brand)}
+.b.d{color:var(--brand)}
+.b:disabled{opacity:.4;cursor:not-allowed}
+.prog{font-size:.75rem;color:var(--soft);white-space:nowrap}
+.bar{height:3px;background:var(--rule);border-radius:2px;overflow:hidden;width:100%}
+.bar i{display:block;height:100%;background:var(--ok)}
+main{display:grid;grid-template-columns:290px 1fr;gap:1rem;padding:1rem;max-width:1240px;margin:0 auto;align-items:start}
+@media(max-width:860px){main{grid-template-columns:1fr}}
+aside{position:sticky;top:70px;max-height:calc(100vh - 90px);overflow:auto;background:var(--card);
+  border:1px solid var(--rule);border-radius:3px}
+@media(max-width:860px){aside{position:static;max-height:44vh}}
+.hit{display:flex;align-items:flex-start;gap:.55rem;width:100%;text-align:start;background:none;border:0;border-bottom:1px solid var(--rule);
+  padding:.5rem .7rem;cursor:pointer;font-size:.92rem}
+.hit:hover{background:var(--paper)}
+.hit[aria-current="true"]{background:var(--paper);box-shadow:inset 3px 0 0 var(--brand)}
+html[dir="rtl"] .hit[aria-current="true"]{box-shadow:inset -3px 0 0 var(--brand)}
+.hit .hit-text{flex:1;min-width:0}
+.hit small{display:block;font-size:.68rem;color:var(--soft);direction:ltr;text-align:start}
+.hit .dot{flex:none;width:8px;height:8px;border-radius:50%;margin-top:.55rem}
+.dot.o{background:var(--ok)}.dot.w{background:var(--warn)}.dot.n{background:var(--rule)}
+section.card{background:var(--card);border:1px solid var(--rule);border-radius:3px;
+  padding:1rem;margin-bottom:1rem;box-shadow:1px 1px 0 0 var(--ink)}
+.girih{height:6px;margin:.9rem 0;background-color:var(--rule);opacity:.55;
+  -webkit-mask-repeat:repeat-x;mask-repeat:repeat-x;-webkit-mask-size:24px 6px;mask-size:24px 6px;
+  -webkit-mask-image:var(--gm);mask-image:var(--gm)}
+h3{font-size:.95rem;font-weight:600}
+.notes-fa{font-family:'Noto Naskh Arabic',Tahoma,serif;font-size:1.05rem;line-height:1.9}
+h2{margin:0 0 .2rem;font-size:1.5rem;font-weight:800;letter-spacing:-.02em}
+.path{font-size:.72rem;color:var(--soft);direction:ltr;text-align:start;margin:0 0 .8rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.7rem}
+label{display:block;font-size:.74rem;color:var(--soft);margin-bottom:.15rem}
+input.f,select.f,textarea.f{width:100%;background:var(--paper);border:1px solid var(--rule);
+  border-radius:3px;padding:.45rem .6rem}
+textarea.f{resize:vertical}
+.row{display:flex;gap:.4rem;align-items:center;padding:.35rem 0;border-bottom:1px solid var(--rule)}
+.row:last-child{border-bottom:0}
+.row .nm{flex:1;min-width:0;background:none;border:0;text-align:start;cursor:pointer;padding:.2rem}
+.row .nm:hover{color:var(--brand)}
+.row .tag{font-size:.66rem;color:var(--soft);direction:ltr}
+.row select.f{width:auto;min-width:7rem;max-width:11rem;flex:none;padding:.25rem .4rem;font-size:.8rem}
+.mini{background:none;border:1px solid var(--rule);border-radius:3px;cursor:pointer;
+  padding:.05rem .4rem;font-size:.8rem;color:var(--soft)}
+.mini:hover{color:var(--brand);border-color:var(--brand)}
+.mini.d:hover{color:var(--brand)}
+.flag{background:#FBF4E4;border:1px solid var(--warn);border-radius:3px;padding:.6rem .8rem;
+  font-size:.86rem;margin-bottom:.8rem}
+.photo{display:flex;gap:.8rem;align-items:center}
+.frame{width:92px;height:115px;flex:none;position:relative}
+.frame svg{position:absolute;inset:0;width:100%;height:100%}
+.frame img{position:absolute;inset:6px;width:calc(100% - 12px);height:calc(100% - 12px);
+  object-fit:cover;-webkit-clip-path:url(#shieldClip);clip-path:url(#shieldClip)}
+.hint{font-size:.76rem;color:var(--soft);margin:.3rem 0 0}
+.toast{position:fixed;bottom:1rem;right:1rem;background:var(--ink);color:#fff;
+  padding:.5rem .9rem;border-radius:3px;font-size:.85rem;opacity:0;transition:opacity .2s;z-index:50}
+.toast.on{opacity:1}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:700px){.split{grid-template-columns:1fr}}
+h3{font-size:.95rem;margin:0 0 .4rem;font-weight:600}
+</style>
+<style id="theme">__THEME_CSS__</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<clipPath id="shieldClip" clipPathUnits="objectBoundingBox">
+<path d="M 0.4735,0.0008 C 0.435,0.0046 0.4091,0.0105 0.3794,0.0223 C 0.3144,0.0483 0.2644,0.0949 0.2412,0.1513 C 0.2386,0.1577 0.2325,0.1774 0.2325,0.1797 C 0.2325,0.1799 0.2163,0.1802 0.1966,0.1803 L 0.1606,0.1805 L 0.16,0.1935 C 0.1583,0.2256 0.1458,0.2492 0.1188,0.2707 C 0.0899,0.2938 0.0547,0.3054 0.0129,0.3054 L 0.0008,0.3054 L 0.0007,0.3076 C 0,0.3181 0.0011,0.5859 0.0019,0.5954 C 0.0083,0.6751 0.0199,0.7141 0.053,0.7668 C 0.124,0.8799 0.2702,0.961 0.4327,0.9772 C 0.6601,1 0.8739,0.9051 0.9609,0.743 C 0.9833,0.7014 0.9925,0.6644 0.9981,0.5954 C 0.9989,0.5859 1,0.3181 0.9993,0.3076 L 0.9992,0.3054 L 0.9871,0.3054 C 0.9453,0.3054 0.9101,0.2938 0.8812,0.2707 C 0.8542,0.2492 0.8417,0.2256 0.84,0.1935 L 0.8394,0.1805 L 0.8035,0.1803 C 0.7837,0.1802 0.7675,0.1799 0.7675,0.1797 C 0.7675,0.1774 0.7614,0.1577 0.7588,0.1513 C 0.7264,0.0726 0.6416,0.0142 0.5424,0.0024 C 0.5315,0.0011 0.4823,0 0.4735,0.0008"/>
+</clipPath></defs></svg>
+<header><div class="hbar">
+  <img class="emb" src="__EMBLEM__" alt="">
+  <div class="grow"><input class="s" id="q" type="search" data-i18n-placeholder="search"></div>
+  <button class="b" id="expFull" data-i18n="export" data-i18n-title="exportFullTitle"></button>
+  <label class="b"><span data-i18n="import"></span><input type="file" id="imp" accept=".json" hidden></label>
+</div></header>
+
+<main>
+  <aside id="list"></aside>
+  <div id="pane"></div>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+
+const BASE = __BASE__;
+const GEN0 = __GEN0__;
+const DATA_REV = __DATA_REV__;
+const PHOTO_IDS = new Set(__PHOTO_IDS__);
+const PHOTO_BASE = 'photos/';
+const I18N = __I18N__;
+const t = (k, d) => (I18N[k] != null && I18N[k] !== '') ? I18N[k] : (d != null ? d : k);
+const pn = (I18N.digits === 'eastern')
+  ? n => String(n).replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[d])
+  : n => String(n);
+function applyStaticI18n(){
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => { el.placeholder = t(el.dataset.i18nPlaceholder); });
+  document.querySelectorAll('[data-i18n-title]').forEach(el => { el.title = t(el.dataset.i18nTitle); });
+}
+
+const SHIELD = 'M 47.35,0.1 C 43.5,0.57 40.91,1.32 37.94,2.8 C 31.44,6.06 26.44,11.91 24.12,18.99 C 23.86,19.78 23.25,22.26 23.25,22.55 C 23.25,22.58 21.63,22.61 19.66,22.62 L 16.06,22.65 L 16,24.29 C 15.83,28.31 14.58,31.27 11.88,33.97 C 8.99,36.87 5.47,38.32 1.29,38.32 L 0.08,38.32 L 0.07,38.6 C 0,39.91 0.11,73.53 0.19,74.71 C 0.83,84.72 1.99,89.61 5.3,96.22 C 12.4,110.42 27.02,120.59 43.27,122.63 C 66.01,125.49 87.39,113.59 96.09,93.24 C 98.33,88.02 99.25,83.38 99.81,74.71 C 99.89,73.53 100,39.91 99.93,38.6 L 99.92,38.32 L 98.71,38.32 C 94.53,38.32 91.01,36.87 88.12,33.97 C 85.42,31.27 84.17,28.31 84,24.29 L 83.94,22.65 L 80.35,22.62 C 78.37,22.61 76.75,22.58 76.75,22.55 C 76.75,22.26 76.14,19.78 75.88,18.99 C 72.64,9.11 64.16,1.79 54.24,0.3 C 53.15,0.13 48.23,0 47.35,0.1';
+const FRAME = `<svg viewBox="0 0 100 125.49" preserveAspectRatio="none" fill="none"
+ stroke="currentColor" stroke-width="1.6"><path d="${SHIELD}"/></svg>`;
+
+const DBN = 'family-tree';
+let DB = null;
+function idb(){ return new Promise(res => { const r = indexedDB.open(DBN, 1);
+  r.onupgradeneeded = () => { r.result.createObjectStore('kv'); };
+  r.onsuccess = () => { DB = r.result; res(DB); }; r.onerror = () => res(null); }); }
+function put(k, v){ return new Promise(res => { if (!DB) return res();
+  const tx = DB.transaction('kv', 'readwrite'); tx.objectStore('kv').put(v, k); tx.oncomplete = () => res(); tx.onerror = () => res(); }); }
+function get(k){ return new Promise(res => { if (!DB) return res(null);
+  const tx = DB.transaction('kv', 'readonly'); const q = tx.objectStore('kv').get(k);
+  q.onsuccess = () => res(q.result || null); q.onerror = () => res(null); }); }
+
+let E = {}, PH = {}, D = {};
+function photoFile(id){
+  return PHOTO_BASE + String(id).replace(/[^A-Za-z0-9._~+-]/g, c => encodeURIComponent(c)) + '.jpg';
+}
+function photoOf(id){
+  if (Object.prototype.hasOwnProperty.call(PH, id)) return PH[id] || null;
+  return PHOTO_IDS.has(id) ? photoFile(id) : null;
+}
+function photosForExport(){
+  const out = {};
+  for (const id in PH) out[id] = PH[id] || null;
+  return out;
+}
+function rebuild(){
+  D = {};
+  for (const k in BASE) D[k] = Object.assign({}, BASE[k]);
+  for (const k in E){
+    if (!BASE[k] && !E[k]._new) continue;
+    if (!D[k]) D[k] = Object.assign({ id: k, c: [], no: [], sp: [], fl: [] }, E[k]);
+    else D[k] = Object.assign({}, D[k], E[k]);
+  }
+  marriages();
+}
+
+function marriages(){
+  for (const pid in D){
+    const p = D[pid]; if (!p || p.spOf) continue;
+    (p.sp || []).forEach((s, i) => {
+      if (!s) return;
+      const id = pid + '+' + (i + 1);
+      const fromBase = BASE[id] || {};
+      const e = E[id] || {};
+      D[id] = Object.assign(
+        { id, n: s, p: null, spOf: pid, g: p.g, mo: '', sp: [], no: [], c: [], fl: [] },
+        fromBase,
+        { spOf: pid },
+        e,
+        { n: (e.n != null && e.n !== '') ? e.n : (fromBase.n || s) }
+      );
+      if (!D[id].n) D[id].n = s;
+    });
+  }
+}
+
+function touch(id, patch){ E[id] = Object.assign({}, E[id] || {}, patch); rebuild(); save(); }
+async function save(){ await put('edits', E); await put('photos', PH); }
+
+const norm = s => (s || '').replace(/[\u064A\u0649]/g, '\u06cc').replace(/\u0643/g, '\u06a9')
+  .replace(/[\u064B-\u0652\u200c]/g, '').replace(/[\u0622\u0623\u0625]/g, '\u0627').trim().toLowerCase();
+const live = () => Object.keys(D).filter(k => !D[k].deleted);
+const nm = id => (D[id] && D[id].n) || '?';
+const sex = id => (D[id] && D[id].sex) || (GEN0[id] && GEN0[id].g) || null;
+function ord(pid){
+  const cs = live().filter(k => D[k].p === pid);
+  const o = (D[pid] && D[pid].order) || [];
+  cs.sort((a, b) => {
+    const ia = o.indexOf(a), ib = o.indexOf(b);
+    if (ia >= 0 && ib >= 0) return ia - ib; if (ia >= 0) return -1; if (ib >= 0) return 1;
+    return a.localeCompare(b, 'en', { numeric: true });
+  });
+  return cs;
+}
+/** Mother name for a child: stated, else the father's only spouse. */
+function motherOfKid(kidId){
+  const k = D[kidId]; if (!k) return '';
+  if (k.mo) return k.mo;
+  if (!k.p) return '';
+  const w = spouseNames(k.p);
+  return w.length === 1 ? w[0] : '';
+}
+/** Same rule as the reader: own kids, or a spouse's kids attributed by mother name. */
+function kidsOf(id){
+  const p = D[id]; if (!p) return [];
+  const own = ord(id);
+  if (!p.spOf) return own;
+  const attributed = ord(p.spOf).filter(k => motherOfKid(k) === p.n);
+  const seen = new Set(own);
+  return own.concat(attributed.filter(k => !seen.has(k)));
+}
+const done = id => !!(E[id] && E[id].verified);
+function status(id){ if (done(id)) return 'o'; if ((D[id].fl || []).length || !sex(id) || !D[id].n) return 'w'; return 'n'; }
+function toast(msg){
+  const el = document.getElementById('toast'); el.textContent = msg; el.classList.add('on');
+  clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('on'), 1600);
+}
+
+let cur = 'ROOT';
+function renderList(){
+  const q = norm(document.getElementById('q').value);
+  let ids = live();
+  if (q) ids = ids.filter(k => norm(nm(k)).includes(q) || k.toLowerCase().includes(q));
+  else ids = ids.sort((a, b) => (D[a].g || 0) - (D[b].g || 0));
+  ids = ids.slice(0, 300);
+  document.getElementById('list').innerHTML = ids.map(k =>
+    `<button class="hit" data-go="${k}" ${k === cur ? 'aria-current="true"' : ''}>
+      <span class="dot ${status(k)}"></span><span class="hit-text">${nm(k)}<small>${k}</small></span></button>`).join('')
+    || `<p style="padding:.8rem;color:var(--soft)">${t('notFound')}</p>`;
+}
+
+function field(label, id, v, type){
+  return `<div><label>${label}</label>
+  <input class="f" id="${id}" ${type || ''} value="${(v || '').replace(/"/g, '&quot;')}"></div>`;
+}
+function spouseSlots(pid){
+  const p = D[pid];
+  return (p && p.sp) ? p.sp.slice() : [];
+}
+function spouseNames(pid){
+  return spouseSlots(pid).filter(Boolean);
+}
+function chain(id){
+  if (!D[id]) return [];
+  if (D[id].p || !D[id].spOf) {
+    const o = []; let c = id, i = 0;
+    while (c && D[c] && i++ < 20){ o.unshift(c); c = D[c].p; }
+    return o;
+  }
+  return chain(D[id].spOf).concat([id]);
+}
+function esc(s){
+  return String(s || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+}
+/** Mother picker: father's spouses when known; keeps an odd current value if needed. */
+function motherSelectHtml(id, current, wives, extraClass){
+  const opts = [{ v: '', lab: t('motherUnknown') }];
+  const seen = new Set();
+  wives.forEach(n => { if (n && !seen.has(n)){ seen.add(n); opts.push({ v: n, lab: n }); } });
+  if (current && !seen.has(current)) opts.push({ v: current, lab: current });
+  return `<select class="f${extraClass ? ' ' + extraClass : ''}" id="${id}">` +
+    opts.map(o => `<option value="${esc(o.v)}"${o.v === (current || '') ? ' selected' : ''}>${esc(o.lab)}</option>`).join('') +
+    `</select>`;
+}
+function renderPane(){
+  const p = D[cur] || {}; const kids = kidsOf(cur); const par = D[p.p] ? p.p : null;
+  const sibs = par ? ord(par).filter(k => k !== cur) : [];
+  const leaf = (p.c || []).filter(c => !c.id && !(p.absorbed || []).includes(c.name));
+  const fatherWives = par ? spouseNames(par) : [];
+  const myWives = spouseNames(cur);
+  const multiMom = !p.spOf && myWives.length > 1;
+  let h = '';
+  if ((p.fl || []).length) h += `<div class="flag"><b>${t('needsReview')}</b><br>${p.fl.join('<br>')}</div>`;
+  h += `<section class="card"><h2>${nm(cur)}</h2><p class="path">${chain(cur).map(x => nm(x)).join(' \u203a ')}</p>
+  <div class="photo"><div class="frame">${FRAME}${photoOf(cur) ? `<img src="${photoOf(cur)}" alt="">` : ''}</div>
+    <div><label>${t('photo')}</label>
+      <input type="file" id="ph" accept="image/*">
+      ${photoOf(cur) ? `<button class="b d" id="phdel" style="margin-top:.4rem">${t('photoRemove')}</button>` : ''}
+      <p class="hint">${t('photoHint')}</p></div></div>
+  <div class="grid" style="margin-top:.8rem">
+    ${field(t('name'), 'f_n', p.n)}
+    ${field(t('familyName'), 'f_fam', p.fam)}
+    <div><label>${t('sex')}</label><select class="f" id="f_sex">
+      <option value="">${t('sexUnknown')}</option>
+      <option value="m"${sex(cur) === 'm' ? ' selected' : ''}>${t('sexMale')}</option>
+      <option value="f"${sex(cur) === 'f' ? ' selected' : ''}>${t('sexFemale')}</option></select></div>
+    ${field(t('birth'), 'f_b', p.b)}
+    ${field(t('death'), 'f_d', p.d)}
+    ${field(t('place'), 'f_pl', p.pl)}
+    <div><label>${t('mother')}</label>
+      ${fatherWives.length
+        ? motherSelectHtml('f_mo', p.mo || '', fatherWives)
+        : `<input class="f" id="f_mo" value="${esc(p.mo)}">`}
+    </div>
+    ${field(t('job'), 'f_job', p.job)}
+  </div>
+  ${p.spOf ? '' : `<div style="margin-top:.7rem"><label>${t('spousesHint')}</label>
+    ${(p.sp || []).map((s, i) => !s ? '' : `<div class="row"><span class="tag">${t('spouse')}</span>
+      <button class="nm" data-go="${cur}+${i + 1}">${esc(s)}</button>
+      <span class="tag">${cur}+${i + 1}</span>
+      <button class="mini d" type="button" data-rm-sp="${i}" title="${esc(t('removeSpouse'))}">\u00d7</button></div>`).join('')}
+    <div class="row" style="margin-top:.35rem"><input class="f" id="newsp" placeholder="${esc(t('newSpouseName'))}">
+      <button class="b" id="addsp">${t('add')}</button></div>
+    <p class="hint">${t('spouseClickHint')}</p>`}
+  <div style="margin-top:.7rem"><label>${t('note')}</label>
+    <textarea class="f" id="f_no" rows="2">${(p.no || []).join('\n')}</textarea></div>
+  <div style="margin-top:.9rem;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
+    <span class="hint" id="savestat" style="margin:0">${t('autoSaveHint')}</span>
+    <button class="b" id="vf">${done(cur) ? t('reviewed') : t('markReviewed')}</button>
+    ${cur !== 'ROOT' ? `<button class="b d" id="del">${t('deletePerson')}</button>` : ''}
+  </div></section>`;
+
+  h += `<div class="split"><section class="card"><h3>${t('children')} (${pn(kids.length)})</h3>`;
+  if (p.spOf) h += `<p class="hint">${t('childrenViaPartner').replace('{name}', nm(p.spOf))}</p>`;
+  h += kids.map((k, i) => {
+    const moPick = multiMom
+      ? motherSelectHtml('mo_' + k, (D[k] && D[k].mo) || '', myWives, 'kid-mo')
+      : (!p.spOf && D[k] && D[k].mo ? `<span class="tag">${esc(D[k].mo)}</span>` : '');
+    return `<div class="row">
+      <button class="mini" data-up="${k}" ${i === 0 ? 'disabled' : ''}>\u2191</button>
+      <button class="mini" data-dn="${k}" ${i === kids.length - 1 ? 'disabled' : ''}>\u2193</button>
+      <button class="nm" data-go="${k}">${nm(k)}</button>
+      ${moPick}
+      <span class="tag">${k}</span></div>`;
+  }).join('') || `<p class="hint">${t('noChildren')}</p>`;
+  if (!p.spOf && leaf.length) h += `<p class="hint" style="margin-top:.6rem">${t('docOnlyKids')}</p>` +
+    leaf.map(c => `<div class="row"><button class="mini" data-promote="${esc(c.name)}">${t('createRecord')}</button>
+      <span class="nm">${esc(c.name)}</span></div>`).join('');
+  h += `<div class="row" style="margin-top:.5rem"><input class="f" id="newc" placeholder="${esc(t('newChildName'))}">
+      ${multiMom ? motherSelectHtml('newc_mo', myWives[0] || '', myWives) : ''}
+      <button class="b" id="addc">${t('add')}</button></div></section>`;
+
+  h += `<section class="card"><div class="girih"></div><h3>${t('family')}</h3>`;
+  h += p.spOf ? `<div class="row"><span class="tag">${t('spouseOf')}</span><button class="nm" data-go="${p.spOf}">${nm(p.spOf)}</button></div>` : '';
+  h += par ? `<div class="row"><span class="tag">${t('parent')}</span><button class="nm" data-go="${par}">${nm(par)}</button></div>` : '';
+  h += sibs.map(k => `<div class="row"><span class="tag">${t('sibling')}</span>
+      <button class="nm" data-go="${k}">${nm(k)}</button></div>`).join('');
+  h += `<h3 style="margin-top:.9rem">${t('reorder')}</h3>
+    <div class="row"><input class="f" id="mv" placeholder="${esc(t('newParentId'))}">
+    <button class="b" id="mvb">${t('move')}</button></div>
+    <p class="hint">${t('moveHint')}</p></section></div>`;
+  document.getElementById('pane').innerHTML = h;
+  wire();
+}
+
+function wire(){
+  const g = id => document.getElementById(id);
+  g('vf').onclick = () => { commitForm(); touch(cur, { verified: !done(cur) }); renderAll(); };
+  if (g('del')) g('del').onclick = () => {
+    commitForm();
+    if (ord(cur).length){ alert(t('deleteHasKids')); return; }
+    if (spouseNames(cur).length){ alert(t('deleteHasSpouses')); return; }
+    if (!confirm(t('confirmDelete'))) return;
+    const p = D[cur] || {};
+    if (p.spOf){
+      const m = /\+(\d+)$/.exec(cur);
+      if (m){
+        const i = +m[1] - 1;
+        const hid = p.spOf;
+        const sp = spouseSlots(hid);
+        if (i >= 0 && i < sp.length) sp[i] = '';
+        E[hid] = Object.assign({}, E[hid] || {}, { sp });
+      }
+    }
+    touch(cur, { deleted: true });
+    cur = p.spOf || p.p || 'ROOT';
+    renderAll();
+  };
+  g('addc').onclick = () => {
+    const v = g('newc').value.trim(); if (!v) return;
+    const moEl = g('newc_mo');
+    const mo = moEl ? moEl.value.trim() : '';
+    addChild(cur, v, false, mo);
+  };
+  g('newc').addEventListener('keydown', e => {
+    if (e.key === 'Enter'){ e.preventDefault(); g('addc').click(); }
+  });
+  if (g('addsp')){
+    g('addsp').onclick = () => {
+      const v = g('newsp').value.trim(); if (!v) return;
+      addSpouse(cur, v);
+    };
+    g('newsp').addEventListener('keydown', e => {
+      if (e.key === 'Enter'){ e.preventDefault(); g('addsp').click(); }
+    });
+  }
+  document.querySelectorAll('[data-rm-sp]').forEach(b => b.onclick = () => {
+    commitForm();
+    const i = +b.dataset.rmSp;
+    const sp = spouseSlots(cur);
+    const sid = cur + '+' + (i + 1);
+    if (i >= 0 && i < sp.length) sp[i] = '';
+    E[cur] = Object.assign({}, E[cur] || {}, { sp });
+    E[sid] = Object.assign({}, E[sid] || {}, { deleted: true });
+    rebuild(); save(); renderAll();
+  });
+  document.querySelectorAll('select.kid-mo').forEach(sel => {
+    sel.onchange = () => {
+      const kid = sel.id.replace(/^mo_/, '');
+      touch(kid, { mo: sel.value.trim() });
+      renderList();
+    };
+  });
+  g('mvb').onclick = () => {
+    commitForm(); const dest = g('mv').value.trim();
+    if (!D[dest]){ alert(t('idNotFound')); return; }
+    touch(cur, { p: dest }); toast(t('moved')); renderAll();
+  };
+  g('ph').onchange = e => {
+    const f = e.target.files[0]; if (!f) return;
+    commitForm();
+    const r = new FileReader(); r.onload = () => { shrink(r.result, d => { PH[cur] = d; save(); renderPane(); }); };
+    r.readAsDataURL(f);
+  };
+  if (g('phdel')) g('phdel').onclick = () => { commitForm(); PH[cur] = null; save(); renderPane(); };
+  document.querySelectorAll('[data-up]').forEach(b => b.onclick = () => { commitForm(); move(b.dataset.up, -1); });
+  document.querySelectorAll('[data-dn]').forEach(b => b.onclick = () => { commitForm(); move(b.dataset.dn, 1); });
+  document.querySelectorAll('[data-promote]').forEach(b => b.onclick = () => addChild(cur, b.dataset.promote, true));
+  ['f_n', 'f_fam', 'f_sex', 'f_b', 'f_d', 'f_pl', 'f_mo', 'f_job', 'f_no'].forEach(id => {
+    const el = g(id); if (!el) return;
+    el.addEventListener('input', () => scheduleFormSave({ rerender: false }));
+    el.addEventListener('change', () => scheduleFormSave({ rerender: id === 'f_sex' || id === 'f_mo' }));
+    el.addEventListener('blur', () => commitForm());
+  });
+}
+function formPatch(){
+  const g = id => document.getElementById(id);
+  if (!g('f_n')) return null;
+  const moEl = g('f_mo');
+  return {
+    n: g('f_n').value.trim(), fam: g('f_fam').value.trim(), sex: g('f_sex').value || null,
+    b: g('f_b').value.trim(), d: g('f_d').value.trim(), pl: g('f_pl').value.trim(),
+    mo: moEl ? moEl.value.trim() : (D[cur].mo || ''),
+    job: g('f_job').value.trim(),
+    sp: D[cur].sp || [],
+    no: g('f_no').value.split('\n').map(s => s.trim()).filter(Boolean)
+  };
+}
+let _formSaveT = null;
+function scheduleFormSave(opts){
+  clearTimeout(_formSaveT);
+  _formSaveT = setTimeout(() => commitForm(opts || {}), 450);
+}
+function commitForm(opts){
+  opts = opts || {};
+  clearTimeout(_formSaveT);
+  const patch = formPatch();
+  if (!patch) return false;
+  const prev = D[cur] || {};
+  const oldName = prev.n;
+  E[cur] = Object.assign({}, E[cur] || {}, patch);
+  /* Keep husband's spouse list + kids' mother names in sync when a spouse is renamed. */
+  if (prev.spOf && oldName && patch.n && patch.n !== oldName){
+    const hid = prev.spOf;
+    const m = /\+(\d+)$/.exec(cur);
+    if (m){
+      const i = +m[1] - 1;
+      const sp = spouseSlots(hid);
+      if (i >= 0){ sp[i] = patch.n; E[hid] = Object.assign({}, E[hid] || {}, { sp }); }
+    }
+    ord(hid).forEach(kid => {
+      if (D[kid] && D[kid].mo === oldName) E[kid] = Object.assign({}, E[kid] || {}, { mo: patch.n });
+    });
+  }
+  rebuild();
+  save();
+  if (opts.rerender) renderAll();
+  else {
+    renderList();
+    const h2 = document.querySelector('#pane h2');
+    if (h2) h2.textContent = nm(cur);
+  }
+  const st = document.getElementById('savestat');
+  if (st){
+    st.textContent = t('saved');
+    clearTimeout(st._t);
+    st._t = setTimeout(() => {
+      if (document.getElementById('savestat') === st) st.textContent = t('autoSaveHint');
+    }, 1200);
+  }
+  return true;
+}
+window.commitEditorForm = () => commitForm();
+function go(id){
+  commitForm();
+  if (!id || id === cur) return;
+  cur = id;
+  renderAll();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function shrink(dataUrl, cb){
+  const i = new Image(); i.onload = () => {
+    const m = 520;
+    const s = Math.min(1, m / Math.max(i.width, i.height));
+    const c = document.createElement('canvas');
+    c.width = i.width * s; c.height = i.height * s;
+    c.getContext('2d').drawImage(i, 0, 0, c.width, c.height);
+    cb(c.toDataURL('image/jpeg', .8));
+  }; i.src = dataUrl;
+}
+function addSpouse(pid, name){
+  commitForm();
+  const sp = spouseSlots(pid);
+  let i = sp.findIndex(s => !s);
+  if (i < 0){ i = sp.length; sp.push(name); }
+  else sp[i] = name;
+  const sid = pid + '+' + (i + 1);
+  E[pid] = Object.assign({}, E[pid] || {}, { sp });
+  if (E[sid] && E[sid].deleted){
+    const keep = Object.assign({}, E[sid]);
+    delete keep.deleted;
+    E[sid] = Object.assign(keep, { n: name });
+  }
+  rebuild(); save();
+  renderAll();
+  requestAnimationFrame(() => { const el = document.getElementById('newsp'); if (el){ el.value = ''; el.focus(); } });
+}
+function addChild(pid, name, fromDoc, mother){
+  commitForm();
+  const host = D[pid] || {};
+  // Kids always use parent = blood parent. Adding from a spouse sets mother to that spouse.
+  const parentId = host.spOf || pid;
+  let n = 1; while (D[parentId + '-x' + n]) n++;
+  const id = parentId + '-x' + n;
+  const wives = spouseNames(parentId);
+  let mo = (mother != null && mother !== undefined) ? String(mother).trim() : '';
+  if (host.spOf) mo = host.n || mo;
+  else if (!mo && wives.length === 1) mo = wives[0];
+  E[id] = { id, n: name, p: parentId, g: (D[parentId].g || 0) + 1, mo, sp: [], no: [], c: [], fl: [], _new: true };
+  const o = ord(parentId).concat([id]);
+  E[parentId] = Object.assign({}, E[parentId] || {}, { order: o });
+  if (fromDoc){
+    const ab = ((D[parentId].absorbed) || []).concat([name]);
+    E[parentId] = Object.assign({}, E[parentId], { absorbed: ab });
+  }
+  rebuild(); save();
+  cur = pid;
+  renderAll();
+  requestAnimationFrame(() => { const el = document.getElementById('newc'); if (el){ el.value = ''; el.focus(); } });
+}
+function move(id, dir){
+  const pid = D[id].p; const o = ord(pid); const i = o.indexOf(id);
+  const j = i + dir; if (j < 0 || j >= o.length) return;
+  o.splice(j, 0, o.splice(i, 1)[0]); touch(pid, { order: o }); renderAll();
+}
+
+function noteOf(r, e){
+  const noteArr = e.no != null ? e.no : r.no;
+  if (Array.isArray(noteArr)) return noteArr.filter(Boolean).join('\n') || null;
+  return noteArr || null;
+}
+/** One people.json record — same shape for blood and spouse. */
+function toPeopleRec(r){
+  const e = E[r.id] || {};
+  return {
+    id: r.id,
+    name: e.n != null ? e.n : (r.n || '?'),
+    sex: e.sex != null ? e.sex : (r.sex || null),
+    parent: r.id === 'ROOT' ? null : (e.p != null ? e.p : r.p) || null,
+    mother: (e.mo != null ? e.mo : r.mo) || null,
+    spouseOf: r.spOf || null,
+    birth: (e.b != null ? e.b : r.b) || null,
+    death: (e.d != null ? e.d : r.d) || null,
+    place: (e.pl != null ? e.pl : r.pl) || null,
+    family: (e.fam != null ? e.fam : r.fam) || null,
+    job: (e.job != null ? e.job : r.job) || null,
+    note: noteOf(r, e),
+    origin: r.add ? 'family' : (r.origin || 'family'),
+    flags: r.fl || [],
+    photo: !!photoOf(r.id)
+  };
+}
+function editorToPeople(){
+  const people = [];
+  const seen = new Set();
+  function push(rec){ if (!rec || !rec.id || seen.has(rec.id)) return; seen.add(rec.id); people.push(rec); }
+  function emitSpouses(r){
+    const e = E[r.id] || {};
+    const names = e.sp != null ? e.sp : (r.sp || []);
+    (names || []).forEach((name, i) => {
+      if (!name || !String(name).trim()) return;
+      const sid = r.id + '+' + (i + 1);
+      if (E[sid] && E[sid].deleted) return;
+      const sd = D[sid] || { id: sid, n: String(name).trim(), spOf: r.id };
+      const spRec = toPeopleRec(Object.assign({}, sd, { spOf: r.id }));
+      if (!spRec.name || spRec.name === '?') spRec.name = String(name).trim();
+      if (!spRec.sex) spRec.sex = 'f';
+      push(spRec);
+    });
+  }
+  function emitBlood(id){
+    const r = D[id];
+    if (!r || r.spOf || r.deleted || seen.has(id)) return;
+    const rec = toPeopleRec(r);
+    rec.spouseOf = null;
+    push(rec);
+    emitSpouses(r);
+    ord(id).forEach(emitBlood);
+  }
+  emitBlood('ROOT');
+  for (const id in D){
+    if (!seen.has(id) && D[id] && !D[id].spOf && !D[id].deleted) emitBlood(id);
+  }
+  for (const id in E){
+    if (seen.has(id)) continue;
+    const e = E[id]; if (!e || e.deleted) continue;
+    if (e._new || e.n){
+      push(toPeopleRec(Object.assign({ id, n: e.n || '?', fl: [], add: true }, e)));
+    }
+  }
+  return {
+    meta: {
+      root: 'ROOT',
+      counts: { total: people.filter(p => p.id !== 'ROOT').length },
+      conventions: { marks: 'male / female / unknown / root' }
+    },
+    people
+  };
+}
+function importArchive(archive, photos){
+  const people = archive.people || [];
+  const byId = {};
+  people.forEach(p => { byId[p.id] = p; });
+  const wives = {};
+  people.forEach(p => {
+    if (p.spouseOf) (wives[p.spouseOf] = wives[p.spouseOf] || []).push(p);
+  });
+  E = {};
+  for (const id of Object.keys(BASE)){
+    if (!byId[id]) E[id] = { deleted: true };
+  }
+  for (const p of people){
+    const patch = {
+      n: p.name || '?',
+      p: p.id === 'ROOT' ? null : (p.parent || null),
+      mo: p.mother || '',
+      sex: p.sex || null,
+      b: p.birth || '',
+      d: p.death || '',
+      pl: p.place || '',
+      fam: p.family || '',
+      job: p.job || '',
+      no: p.note ? String(p.note).split(/\n/) : [],
+      _new: !BASE[p.id]
+    };
+    if (p.spouseOf){ E[p.id] = patch; continue; }
+    const list = wives[p.id] || [];
+    const sp = [];
+    list.forEach(w => {
+      const m = /\+(\d+)$/.exec(w.id);
+      const i = m ? (+m[1] - 1) : sp.length;
+      while (sp.length <= i) sp.push('');
+      sp[i] = w.name || '';
+    });
+    patch.sp = sp;
+    E[p.id] = patch;
+  }
+  PH = Object.assign({}, photos || {});
+}
+async function exportFullArchive(){
+  if (typeof commitEditorForm === 'function') commitEditorForm();
+  const archive = editorToPeople();
+  const photos = {};
+  const ids = new Set([...Object.keys(D), ...Object.keys(PH)]);
+  for (const id of ids){
+    if (Object.prototype.hasOwnProperty.call(PH, id) && !PH[id]){ photos[id] = null; continue; }
+    const src = photoOf(id);
+    if (!src) continue;
+    if (src.startsWith('data:')){ photos[id] = src; continue; }
+    try {
+      const res = await fetch(src);
+      if (!res.ok) continue;
+      const blob = await res.blob();
+      photos[id] = await new Promise((resolve, reject) => {
+        const fr = new FileReader();
+        fr.onload = () => resolve(fr.result);
+        fr.onerror = reject;
+        fr.readAsDataURL(blob);
+      });
+    } catch (_e) {}
+  }
+  const blob = new Blob([JSON.stringify({ v: 1, archive, photos }, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'family-export.json'; a.click();
+  toast(t('exportFullDone'));
+}
+
+document.getElementById('expFull').addEventListener('click', () => exportFullArchive());
+document.getElementById('imp').onchange = e => {
+  const f = e.target.files[0]; if (!f) return; const r = new FileReader();
+  r.onload = () => {
+    try {
+      const j = JSON.parse(r.result);
+      if (j.archive && Array.isArray(j.archive.people)) importArchive(j.archive, j.photos || {});
+      else { E = j.edits || {}; PH = j.photos || {}; }
+      rebuild(); save(); renderAll(); toast(t('imported'));
+    } catch (x) { alert(t('importFailed')); }
+  };
+  r.readAsText(f); e.target.value = '';
+};
+document.getElementById('q').addEventListener('input', renderList);
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-go]'); if (!b) return;
+  go(b.dataset.go);
+});
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 's'){
+    e.preventDefault(); commitForm({ rerender: true }); toast(t('saved'));
+  }
+});
+
+function renderAll(){ renderList(); renderPane(); }
+(async () => {
+  applyStaticI18n();
+  await idb();
+  const prev = await get('dataRev');
+  if (prev !== DATA_REV){
+    E = {}; PH = {};
+    await put('edits', E); await put('photos', PH); await put('dataRev', DATA_REV);
+  } else {
+    E = (await get('edits')) || {};
+    PH = (await get('photos')) || {};
+  }
+  rebuild(); renderAll();
+})();
+
+</script>
+</body>
+</html>

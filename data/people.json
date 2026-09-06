@@ -1,0 +1,27 @@
+{
+ "meta": {
+  "root": "ROOT",
+  "counts": {
+   "total": 0
+  }
+ },
+ "people": [
+  {
+   "id": "ROOT",
+   "name": "Root",
+   "sex": "m",
+   "parent": null,
+   "mother": null,
+   "spouseOf": null,
+   "birth": null,
+   "death": null,
+   "place": null,
+   "family": null,
+   "job": null,
+   "note": null,
+   "origin": "family",
+   "flags": [],
+   "photo": false
+  }
+ ]
+}
