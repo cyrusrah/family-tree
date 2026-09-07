@@ -268,7 +268,7 @@ function renderPane(){
   const p = D[cur] || {}; const kids = kidsOf(cur); const par = D[p.p] ? p.p : null;
   const sibs = par ? ord(par).filter(k => k !== cur) : [];
   const leaf = (p.c || []).filter(c => !c.id && !(p.absorbed || []).includes(c.name));
-  const fatherWives = par ? spouseNames(par) : [];
+  const partnersOfParent = par ? spouseNames(par) : [];
   const myWives = spouseNames(cur);
   const multiMom = !p.spOf && myWives.length > 1;
   let h = '';
@@ -289,9 +289,9 @@ function renderPane(){
     ${field(t('birth'), 'f_b', p.b)}
     ${field(t('death'), 'f_d', p.d)}
     ${field(t('place'), 'f_pl', p.pl)}
-    <div><label>${t('mother')}</label>
-      ${fatherWives.length
-        ? motherSelectHtml('f_mo', p.mo || '', fatherWives)
+    <div><label>${t('otherParent')}</label>
+      ${partnersOfParent.length
+        ? motherSelectHtml('f_mo', p.mo || '', partnersOfParent)
         : `<input class="f" id="f_mo" value="${esc(p.mo)}">`}
     </div>
     ${field(t('job'), 'f_job', p.job)}
@@ -337,6 +337,11 @@ function renderPane(){
   h += par ? `<div class="row"><span class="tag">${t('parent')}</span><button class="nm" data-go="${par}">${nm(par)}</button></div>` : '';
   h += sibs.map(k => `<div class="row"><span class="tag">${t('sibling')}</span>
       <button class="nm" data-go="${k}">${nm(k)}</button></div>`).join('');
+  if (cur !== 'ROOT'){
+    h += `<div class="row" style="margin-top:.55rem"><input class="f" id="newp" placeholder="${esc(t('newParentName'))}">
+      <button class="b" id="addp">${t('addParent')}</button></div>
+      <p class="hint">${par ? t('addOtherParentHint') : t('addParentHint')}</p>`;
+  }
   h += `<h3 style="margin-top:.9rem">${t('reorder')}</h3>
     <div class="row"><input class="f" id="mv" placeholder="${esc(t('newParentId'))}">
     <button class="b" id="mvb">${t('move')}</button></div>
@@ -377,6 +382,15 @@ function wire(){
   g('newc').addEventListener('keydown', e => {
     if (e.key === 'Enter'){ e.preventDefault(); g('addc').click(); }
   });
+  if (g('addp')){
+    g('addp').onclick = () => {
+      const v = g('newp').value.trim(); if (!v) return;
+      addParent(cur, v);
+    };
+    g('newp').addEventListener('keydown', e => {
+      if (e.key === 'Enter'){ e.preventDefault(); g('addp').click(); }
+    });
+  }
   if (g('addsp')){
     g('addsp').onclick = () => {
       const v = g('newsp').value.trim(); if (!v) return;
@@ -500,8 +514,7 @@ function shrink(dataUrl, cb){
     cb(c.toDataURL('image/jpeg', .8));
   }; i.src = dataUrl;
 }
-function addSpouse(pid, name){
-  commitForm();
+function linkSpouse(pid, name){
   const sp = spouseSlots(pid);
   let i = sp.findIndex(s => !s);
   if (i < 0){ i = sp.length; sp.push(name); }
@@ -512,10 +525,42 @@ function addSpouse(pid, name){
     const keep = Object.assign({}, E[sid]);
     delete keep.deleted;
     E[sid] = Object.assign(keep, { n: name });
+  } else {
+    E[sid] = Object.assign({}, E[sid] || {}, { n: name, _new: !BASE[sid] });
   }
+  return sid;
+}
+function addSpouse(pid, name){
+  commitForm();
+  linkSpouse(pid, name);
   rebuild(); save();
   renderAll();
   requestAnimationFrame(() => { const el = document.getElementById('newsp'); if (el){ el.value = ''; el.focus(); } });
+}
+/** Link a parent for anyone: first call sets parent; next adds the other parent as that person's spouse. */
+function addParent(childId, name){
+  commitForm();
+  if (!childId || childId === 'ROOT') return;
+  const child = D[childId];
+  if (!child || child.deleted) return;
+  const stem = child.p && D[child.p] && !D[child.p].deleted ? child.p : null;
+  if (stem){
+    linkSpouse(stem, name);
+    E[childId] = Object.assign({}, E[childId] || {}, { mo: name });
+  } else {
+    let n = 1;
+    while (D['P-' + n] || (E['P-' + n] && !E['P-' + n].deleted)) n++;
+    const pid = 'P-' + n;
+    E[pid] = {
+      id: pid, n: name, p: null, g: 0, sex: null,
+      sp: [], no: [], c: [], fl: [], _new: true
+    };
+    E[childId] = Object.assign({}, E[childId] || {}, { p: pid });
+  }
+  rebuild(); save();
+  cur = childId;
+  renderAll();
+  toast(t('parentAdded'));
 }
 function addChild(pid, name, fromDoc, mother){
   commitForm();

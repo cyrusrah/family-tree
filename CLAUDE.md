@@ -79,6 +79,12 @@ Each person in `data/people.json` uses the same fields:
 
 Kids hang under the blood parent (`parent`). Spouses show those kids when `mother` matches their name (or when they are the only spouse).
 
+In the editor, **Add parent** works for anyone (including spouses), any sex:
+1. First time → creates `P-*` and sets `parent`
+2. Again → adds the other parent as a spouse of that person and sets the child’s `mother` / other-parent name
+
+Same fields as before — no separate mom/dad modes. Set each parent’s sex on their own page if you want.
+
 Do **not** invent parallel schemas, side flags, or mother/father “modes.”
 
 ## Where to change what
