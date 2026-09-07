@@ -91,6 +91,7 @@ h3{font-size:.95rem;margin:0 0 .4rem;font-weight:600}
   <div class="grow"><input class="s" id="q" type="search" data-i18n-placeholder="search"></div>
   <button class="b" id="expFull" data-i18n="export" data-i18n-title="exportFullTitle"></button>
   <label class="b"><span data-i18n="import"></span><input type="file" id="imp" accept=".json" hidden></label>
+  <button class="b d" id="resetSite" data-i18n="resetToSite" data-i18n-title="resetToSiteTitle"></button>
 </div></header>
 
 <main>
@@ -733,6 +734,14 @@ async function exportFullArchive(){
 }
 
 document.getElementById('expFull').addEventListener('click', () => exportFullArchive());
+document.getElementById('resetSite').addEventListener('click', async () => {
+  if (!confirm(t('resetToSiteConfirm'))) return;
+  E = {}; PH = {};
+  await save();
+  cur = 'ROOT';
+  rebuild(); renderAll();
+  toast(t('resetToSiteDone'));
+});
 document.getElementById('imp').onchange = e => {
   const f = e.target.files[0]; if (!f) return; const r = new FileReader();
   r.onload = () => {

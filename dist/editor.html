@@ -108,6 +108,7 @@ h3{font-size:.95rem;margin:0 0 .4rem;font-weight:600}
   <div class="grow"><input class="s" id="q" type="search" data-i18n-placeholder="search"></div>
   <button class="b" id="expFull" data-i18n="export" data-i18n-title="exportFullTitle"></button>
   <label class="b"><span data-i18n="import"></span><input type="file" id="imp" accept=".json" hidden></label>
+  <button class="b d" id="resetSite" data-i18n="resetToSite" data-i18n-title="resetToSiteTitle"></button>
 </div></header>
 
 <main>
@@ -123,7 +124,7 @@ const GEN0 = {"ROOT":{"g":"m","how":"name"}};
 const DATA_REV = "0947683b78207318";
 const PHOTO_IDS = new Set([]);
 const PHOTO_BASE = 'photos/';
-const I18N = {"familyName":"نام خانوادگی","mother":"مادر","spouse":"همسر","spouseOf":"همسرِ","children":"فرزندان","job":"شغل یا توضیح کوتاه","title":"کارگاه شجره‌نامه","search":"جست‌وجوی نام یا کد","nextReview":"بعدی برای بررسی","export":"خروجی","exportFull":"خروجی کامل","exportFullTitle":"خروجی کامل برای GitHub","exportFullDone":"خروجی کامل آماده شد — family-export.json","import":"ورود","exportDone":"فایل ساخته شد","saved":"ذخیره شد","autoSaveHint":"تغییرات خودکار ذخیره می‌شوند","imported":"وارد شد","importFailed":"فایل خوانده نشد.","reviewDone":"چیزی برای بررسی نمانده","notFound":"چیزی پیدا نشد.","name":"نام","sex":"جنسیت","sexUnknown":"نامشخص","sexMale":"مرد","sexFemale":"زن","birth":"سال تولد","death":"سال درگذشت","place":"زادگاه","otherParent":"والد دیگر","motherUnknown":"نامشخص","spousesHint":"همسران","newSpouseName":"نام همسر تازه","removeSpouse":"حذف","note":"یادداشت","photo":"عکس","photoRemove":"حذف عکس","save":"ذخیره","markReviewed":"علامت بررسی‌شده","reviewed":"بررسی‌شده ✓","reviewedMark":"بررسی‌شده \\u2713","deletePerson":"حذف این شخص","add":"افزودن","move":"انتقال","reorder":"جابه‌جایی","family":"خانواده","noChildren":"فرزندی ثبت نشده.","childrenViaPartner":"فرزندان از طریق {name} (همان رکوردها).","newChildName":"نام فرزند تازه","createRecord":"+ ساختن رکورد","docOnlyKids":"در سند آمده ولی هنوز رکورد ندارند:","newParentId":"کد والد تازه، مثلا ب-2","parent":"والد","addParent":"افزودن والد","newParentName":"نام والد","addParentHint":"یک والد با هر جنسیتی می‌سازد و این فرد را زیر او می‌گذارد.","addOtherParentHint":"والد دیگر را به‌عنوان همسرِ والدِ ثبت‌شده می‌افزاید (هر جنسیتی).","parentAdded":"والد افزوده شد","sibling":"هم‌نیا","needsReview":"نیاز به بررسی:","spouseClickHint":"برای افزودن عکس یا سال تولدِ همسر، روی نامش بزنید.","moveHint":"اگر کسی زیر والد اشتباه ثبت شده، اینجا اصلاحش کنید.","photoHint":"عکس‌های بایگانی از سایت بارگذاری می‌شوند. عکس تازه تا زمان خروجی در همین مرورگر می‌ماند.","deleteHasKids":"اول فرزندان را جابه‌جا یا حذف کنید.","deleteHasSpouses":"اول همسران را حذف کنید.","confirmDelete":"حذف شود؟","idNotFound":"این کد پیدا نشد.","moved":"منتقل شد","reviewedWord":"بررسی‌شده","progress":"{ok} از {tot} بررسی‌شده","digits":"eastern"};
+const I18N = {"familyName":"نام خانوادگی","mother":"مادر","spouse":"همسر","spouseOf":"همسرِ","children":"فرزندان","job":"شغل یا توضیح کوتاه","title":"کارگاه شجره‌نامه","search":"جست‌وجوی نام یا کد","nextReview":"بعدی برای بررسی","export":"خروجی","exportFull":"خروجی کامل","exportFullTitle":"خروجی کامل برای GitHub","exportFullDone":"خروجی کامل آماده شد — family-export.json","import":"ورود","resetToSite":"بازنشانی","resetToSiteTitle":"حذف ویرایش‌های محلی و بارگذاری دوباره از سایت","resetToSiteConfirm":"همهٔ ویرایش‌ها و عکس‌های محلی این مرورگر پاک شود؟ دادهٔ سایت/گیت‌هاب عوض نمی‌شود.","resetToSiteDone":"به دادهٔ سایت برگشت","exportDone":"فایل ساخته شد","saved":"ذخیره شد","autoSaveHint":"تغییرات خودکار ذخیره می‌شوند","imported":"وارد شد","importFailed":"فایل خوانده نشد.","reviewDone":"چیزی برای بررسی نمانده","notFound":"چیزی پیدا نشد.","name":"نام","sex":"جنسیت","sexUnknown":"نامشخص","sexMale":"مرد","sexFemale":"زن","birth":"سال تولد","death":"سال درگذشت","place":"زادگاه","otherParent":"والد دیگر","motherUnknown":"نامشخص","spousesHint":"همسران","newSpouseName":"نام همسر تازه","removeSpouse":"حذف","note":"یادداشت","photo":"عکس","photoRemove":"حذف عکس","save":"ذخیره","markReviewed":"علامت بررسی‌شده","reviewed":"بررسی‌شده ✓","reviewedMark":"بررسی‌شده \\u2713","deletePerson":"حذف این شخص","add":"افزودن","move":"انتقال","reorder":"جابه‌جایی","family":"خانواده","noChildren":"فرزندی ثبت نشده.","childrenViaPartner":"فرزندان از طریق {name} (همان رکوردها).","newChildName":"نام فرزند تازه","createRecord":"+ ساختن رکورد","docOnlyKids":"در سند آمده ولی هنوز رکورد ندارند:","newParentId":"کد والد تازه، مثلا ب-2","parent":"والد","addParent":"افزودن والد","newParentName":"نام والد","addParentHint":"یک والد با هر جنسیتی می‌سازد و این فرد را زیر او می‌گذارد.","addOtherParentHint":"والد دیگر را به‌عنوان همسرِ والدِ ثبت‌شده می‌افزاید (هر جنسیتی).","parentAdded":"والد افزوده شد","sibling":"هم‌نیا","needsReview":"نیاز به بررسی:","spouseClickHint":"برای افزودن عکس یا سال تولدِ همسر، روی نامش بزنید.","moveHint":"اگر کسی زیر والد اشتباه ثبت شده، اینجا اصلاحش کنید.","photoHint":"عکس‌های بایگانی از سایت بارگذاری می‌شوند. عکس تازه تا زمان خروجی در همین مرورگر می‌ماند.","deleteHasKids":"اول فرزندان را جابه‌جا یا حذف کنید.","deleteHasSpouses":"اول همسران را حذف کنید.","confirmDelete":"حذف شود؟","idNotFound":"این کد پیدا نشد.","moved":"منتقل شد","reviewedWord":"بررسی‌شده","progress":"{ok} از {tot} بررسی‌شده","digits":"eastern"};
 const t = (k, d) => (I18N[k] != null && I18N[k] !== '') ? I18N[k] : (d != null ? d : k);
 const pn = (I18N.digits === 'eastern')
   ? n => String(n).replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[d])
@@ -750,6 +751,14 @@ async function exportFullArchive(){
 }
 
 document.getElementById('expFull').addEventListener('click', () => exportFullArchive());
+document.getElementById('resetSite').addEventListener('click', async () => {
+  if (!confirm(t('resetToSiteConfirm'))) return;
+  E = {}; PH = {};
+  await save();
+  cur = 'ROOT';
+  rebuild(); renderAll();
+  toast(t('resetToSiteDone'));
+});
 document.getElementById('imp').onchange = e => {
   const f = e.target.files[0]; if (!f) return; const r = new FileReader();
   r.onload = () => {
