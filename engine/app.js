@@ -30,8 +30,11 @@ export function start(archive, assets) {
   const useFaKinship = (T.lang || '') === 'fa';
   const fa = useFaKinship ? K.fa : (n => String(n));
   const nameOf = id => {
-    if (id === 'ROOT' || id === (cfg.rootId || 'ROOT')) return t('rootName', nameOfRaw(id));
-    return nameOfRaw(id);
+    const raw = nameOfRaw(id);
+    const isRoot = id === 'ROOT' || id === (cfg.rootId || 'ROOT');
+    /* Locale "Root"/"ریشه" only when the record has no real name yet. */
+    if (isRoot && (!raw || /^root$/i.test(String(raw).trim()))) return t('rootName', raw || 'Root');
+    return raw;
   };
 
   /* Gender-aware kinship for non-Persian locales (en / ar). Core phrases have

@@ -102,6 +102,9 @@ def main():
         for r in archive["people"]:
             r["photo"] = False
 
+    docs_dir = ROOT / "data" / "docs"
+    docs_base = "docs/" if docs_dir.exists() and any(docs_dir.iterdir()) else None
+
     def font_face(family, weight, file):
         return (
             f"@font-face{{font-family:'{family}';font-style:normal;font-weight:{weight};"
@@ -187,6 +190,7 @@ start({json.dumps(archive, ensure_ascii=False)}, {{
   legend: {json.dumps(legend)},
   photos: {json.dumps(photo_payload)},
   photoBase: {json.dumps(photo_base)},
+  docsBase: {json.dumps(docs_base)},
   i18n: {json.dumps(i18n, ensure_ascii=False)},
   config: {json.dumps(config, ensure_ascii=False)},
   theme: {json.dumps(theme_meta, ensure_ascii=False)}
@@ -212,6 +216,15 @@ start({json.dumps(archive, ensure_ascii=False)}, {{
         for f in photos_dir.iterdir():
             if f.is_file() and f.suffix.lower() in {".jpg", ".jpeg", ".png", ".webp"}:
                 shutil.copy2(f, dist_photos / f.name)
+
+    dist_docs = dist / "docs"
+    if dist_docs.exists():
+        shutil.rmtree(dist_docs)
+    if docs_base and docs_dir.exists():
+        dist_docs.mkdir()
+        for f in docs_dir.iterdir():
+            if f.is_file():
+                shutil.copy2(f, dist_docs / f.name)
 
     manifest = {
         "name": title,
